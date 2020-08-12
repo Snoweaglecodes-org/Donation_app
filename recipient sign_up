@@ -1,0 +1,139 @@
+//import 'dart:html';
+import 'package:async/async.dart';
+import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/rendering.dart';
+void main()
+{
+  runApp(recipient());
+}
+class recipient extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home:home(),
+    );
+  }
+}
+class home extends StatefulWidget {
+
+  @override
+  _homeState createState() => _homeState();
+}
+class _homeState extends State<home> {
+ DateTime _dateTime;
+ String firstname,lastname;
+ String dropdownvalue='Select Gender';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recipient Form'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Text('Please Enter Your Details',style: TextStyle(fontSize: 18.1,fontStyle: FontStyle.italic),),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+//                  height: 200,
+//                  width: 390,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.black87,)
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Text('Personal Details'),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          //cursorWidth: 4.0,
+                          style: TextStyle(
+                              fontSize: 17,height: 1.1
+                          ),
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(labelText:'First Name',
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+                              onSaved: (input)=>firstname=input,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+
+                          style: TextStyle(
+                              fontSize: 17,height: 1.1
+                          ),
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(labelText:'Last Name',
+                              contentPadding: EdgeInsets.all(10),
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+                         // validator: (input) => !input.contains('@') ? 'Not a valid Email' : null,
+                          onSaved: (input)=>lastname=input,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          style: TextStyle(
+                              fontSize: 17,height: 1.1
+                          ),
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                              labelText:'Date Of Birth',
+                              contentPadding: EdgeInsets.all(10),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular((20))),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                Icons.calendar_today,
+                                size: 25,
+                              ),
+                              onPressed: (){
+                                showDatePicker(context: (context),  firstDate: DateTime(1950), lastDate: DateTime.now(), initialDate: DateTime.now()).then((date) { setState((){_dateTime=date;});});
+                              },
+                            )
+                          ),
+                        ),
+                      ),
+                      Text(_dateTime.toString()),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+//                           
+                          child: DropdownButtonFormField(
+                            value: dropdownvalue,
+                            onChanged: (String newvalue){setState(() {
+                               dropdownvalue=newvalue;
+                            });},
+
+                            items: <String>['Select Gender', 'Male', 'Female', 'Others']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            
+          ],
+        ),
+      ),
+
+    );
+  }
+}
+
